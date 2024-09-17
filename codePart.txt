@@ -1,0 +1,70 @@
+1.用户信息 (User Information) 索引
+创建索引:
+PUT /users
+{
+  "mappings": {
+    "properties": {
+      "user_id":{
+        "type": "keyword"
+      },
+      "name":{
+        "type":"text",
+        "fields":{
+          "keyword":{
+            "type":"keyword",
+            "ignore_above":256
+          }
+        }
+        
+      },
+      "email":{
+        "type": "keyword"
+      },
+      "date_of_birth":{
+        "type":"date",
+        "format":"yyyy-MM-dd"
+      },
+      "gender":{
+        "type":"keyword"
+      },
+      "address":{
+        "type":"text",
+        
+        "keyword":{
+          "type":"keyword",
+          "ignore_above":256
+        }
+      },
+      "phone_number":{
+        "type": "keyword"
+       
+      },
+      "registration_date":{
+        "type": "date",
+        "format": "yyyy-MM-dd"
+       
+      },
+      "last_login":{
+        "type": "date",
+        "format": "yyyy-MM-dd'T'HH:mm:ssZ"
+      },
+      "status":{
+        "type": "keyword"
+      }
+    }
+  }
+}
+修改索引：
+1. 添加索引设置：可以为索引配置一些基本设置，如副本数和分片数，以确保性能和可用性。
+2. 添加动态字段映射控制：可以通过设置 "dynamic": "strict" 来确保只有定义好的字段被索引，防止动态创建多余的字段。
+3. 地址字段结构优化：address 字段可以设计为复杂对象，包含 city、state、postal_code 等子字段，而不是简单的 text 字段。
+4. 添加其他日期格式：考虑到时间字段的灵活性，last_login 字段可以允许更多的日期格式，不一定局限于单一的 yyyy-MM-dd'T'HH:mm:ssZ。
+5. 状态字段枚举化：status 字段可以设置为预定义值（如 "active", "inactive", "banned"）等，这可以通过管控应用程序来实现，也可以通过 normalizer 或者其他形式对数据进行标准化。
+6. 启用全文搜索增强功能：对于 name 和 address 字段，可以考虑启用一些分析器（如 lowercase, edge_ngram），提高部分匹配、模糊匹配的能力。
+7. 字段长度控制：可以考虑对某些字段（如 name, address）限制其最大长度，以控制数据的存储和索引性能。
+
+
+Product_Catalog修改描述：
+添加 is_on_sale 字段：标识产品是否在促销活动中，这可以帮助用户过滤特定的促销产品。
+添加 image_url 字段：用于存储产品图片的链接地址，以便于前端应用显示产品图片
+。
